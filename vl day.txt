@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Will You Be My Valentine? 💕</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Comic Sans MS', cursive;
+    overflow: hidden;
+}
+
+.card {
+    background: white;
+    padding: 40px;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    position: relative;
+    width: 350px;
+}
+
+h1 {
+    color: #ff4d6d;
+}
+
+input {
+    padding: 10px;
+    border-radius: 20px;
+    border: 2px solid #ff4d6d;
+    outline: none;
+    text-align: center;
+    margin-bottom: 20px;
+    width: 80%;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    position: absolute;
+}
+
+#yesBtn {
+    background: #ff4d6d;
+    color: white;
+    left: 30%;
+    bottom: 20px;
+}
+
+#yesBtn:hover {
+    transform: scale(1.1);
+}
+
+#noBtn {
+    background: #ffd6e0;
+    color: #ff4d6d;
+}
+
+.message {
+    display: none;
+    font-size: 24px;
+    color: #ff4d6d;
+}
+
+/* Floating hearts */
+.heart {
+    position: absolute;
+    font-size: 20px;
+    animation: float 6s linear infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(100vh); opacity: 1; }
+    100% { transform: translateY(-10vh); opacity: 0; }
+}
+
+/* Confetti */
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    animation: fall 3s linear infinite;
+}
+
+@keyframes fall {
+    from { transform: translateY(-10vh); }
+    to { transform: translateY(100vh); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 Taylor Swift – Lover (Spotify Embed) -->
+<iframe style="border-radius:12px"
+src="https://open.spotify.com/embed/track/1dGr1c8CrMLDpV6mPbImSI?utm_source=generator&theme=0"
+width="100%" height="80"
+frameBorder="0"
+allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+loading="lazy">
+</iframe>
+
+<div class="card">
+    <input type="text" id="nameInput" placeholder="Enter your name 💕">
+    <h1 id="question">Will you be my Valentine? 💖</h1>
+
+    <button id="yesBtn">YES 💕</button>
+    <button id="noBtn">NO 😝</button>
+
+    <div class="message" id="message"></div>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const nameInput = document.getElementById("nameInput");
+const question = document.getElementById("question");
+const message = document.getElementById("message");
+
+// Move NO button on mouseover and mousedown
+noBtn.addEventListener("mouseover", () => {
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 100);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+});
+
+noBtn.addEventListener("mousedown", () => {
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 100);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+});
+
+// ✨ Name Personalization
+nameInput.addEventListener("input", () => {
+    if (nameInput.value.trim() !== "") {
+        question.innerText = `Will you be my Valentine, ${nameInput.value}? 💖`;
+    } else {
+        question.innerText = "Will you be my Valentine? 💖";
+    }
+});
+
+// 💖 YES Button Action + Confetti
+yesBtn.addEventListener("click", () => {
+    document.body.style.background =
+      "radial-gradient(circle at center, #ff7aa2, #ff4d6d)";
+    
+    yesBtn.style.display = "none";
+    noBtn.style.display = "none";
+    nameInput.style.display = "none";
+    question.style.display = "none";
+
+    message.style.display = "block";
+    message.innerHTML = "";
+
+    const name = nameInput.value || "My Love";
+
+    const lines = [
+        `Hey ${name} 💖`,
+        "From the moment you clicked YES…",
+        "my heart smiled.",
+        "",
+        "This isn’t just a Valentine.",
+        "It’s a promise of laughs,",
+        "warm hugs,",
+        "and little moments that matter.",
+        "",
+        "Thank you for choosing me. 💕"
+    ];
+
+    let i = 0;
+    let j = 0;
+
+    function typeLine() {
+        if (i < lines.length) {
+            if (j < lines[i].length) {
+                message.innerHTML += lines[i].charAt(j);
+                j++;
+                setTimeout(typeLine, 50);
+            } else {
+                message.innerHTML += "<br>";
+                j = 0;
+                i++;
+                setTimeout(typeLine, 400);
+            }
+        }
+    }
+
+    typeLine();
+    softConfetti();
+});
+
+// 💗 Soft Romantic Confetti
+function softConfetti() {
+    for (let i = 0; i < 60; i++) {
+        const heart = document.createElement("div");
+        heart.innerHTML = "💗";
+        heart.style.position = "fixed";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.top = "-10vh";
+        heart.style.fontSize = Math.random() * 20 + 15 + "px";
+        heart.style.animation = "fall 5s linear";
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 5000);
+    }
+}
+
+// 💕 Floating Hearts
+setInterval(() => {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 20 + 10 + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 6000);
+}, 300);
+</script>
+
+</body>
+</html>
